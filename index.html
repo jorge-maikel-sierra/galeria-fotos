@@ -3,54 +3,87 @@
 
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>jQuery</title>
+    <meta name="description" content="Galeria de fotos interactiva">
+    <title>Galeria de Fotos | jQuery</title>
+
+    <!-- Precargar fuentes -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Cargar CSS -->
     <link rel="stylesheet" href="main.css">
 </head>
 
 <body>
-    <header>
+    <header class="header">
         <h1>Galeria de fotos</h1>
-        <button type="button">Nova imagem +</button>
+        <button type="button" id="btn-nova-imagem" aria-label="Adicionar nova imagem">Nueva imagen +</button>
     </header>
-    <form>
-        <h2>Inserir nova imagem</h2>
-        <input type="url" id="endereço-imagem-nova" required placeholder="URL da imagem" />
-        <button type="submit">Adicionar</button>
-        <button type="reset" id="botao-cancelar">Cancelar</button>
-    </form>
-    <ul>
-        <li>
-            <img src="./images/foto1.jpg" alt="Pintura de um gato" />
-            <div class="overlay-imagem-link">
-                <a href="./images/foto1.jpg" title="Ver imagem em tamanho real" target="_blank">
-                    Ver imagem em tamanho real
-                </a>
+
+    <main>
+        <form id="form-adicionar-imagem" class="form-adicionar hidden">
+            <h2>Insertar nueva imagen</h2>
+            <div class="form-group">
+                <label for="endereco-imagem-nova">URL de imagen:</label>
+                <input type="url" id="endereco-imagem-nova" required placeholder="Inserta URL de la imagen"
+                    aria-required="true" />
             </div>
-        </li>
-        <li>
-            <img src="./images/foto2.jpg" alt="Pintura de um gato" />
-            <div class="overlay-imagem-link">
-                <a href="./images/foto2.jpg" title="Ver imagem em tamanho real" target="_blank">
-                    Ver imagem em tamanho real
-                </a>
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary">Adicionar</button>
+                <button type="reset" id="botao-cancelar" class="btn btn-secondary">Cancelar</button>
             </div>
-        </li>
-        <li>
-            <img src="./images/foto3.jpg" alt="Pintura de um gato" />
-            <div class="overlay-imagem-link">
-                <a href="./images/foto3.jpg" title="Ver imagem em tamanho real" target="_blank">
-                    Ver imagem em tamanho real
-                </a>
-            </div>
-        </li>
-    </ul>
-    <script src="https://code.jquery.com/jquery-3.6.1.min.js"></script>
-    <script src="main.js"></script>
+        </form>
+
+        <section class="galeria">
+            <h2 class="sr-only">Imagenes de galeria</h2>
+            <ul class="lista-imagens">
+                <li class="item-galeria">
+                    <figure>
+                        <img src="./images/foto1.jpg" alt="Pintura de un gato" loading="lazy" />
+                        <figcaption class="overlay-imagem-link">
+                            <a href="./images/foto1.jpg" title="Ver imagen en tamaño real" target="_blank"
+                                rel="noopener">
+                                Ver imagen en tamaño real
+                            </a>
+                        </figcaption>
+                    </figure>
+                </li>
+                <li class="item-galeria">
+                    <figure>
+                        <img src="./images/foto2.jpg" alt="Pintura de un gato" loading="lazy" />
+                        <figcaption class="overlay-imagem-link">
+                            <a href="./images/foto2.jpg" title="Ver imagen en tamaño real" target="_blank"
+                                rel="noopener">
+                                Ver imagen en tamaño realVer imagem em tamanho real
+                            </a>
+                        </figcaption>
+                    </figure>
+                </li>
+                <li class="item-galeria">
+                    <figure>
+                        <img src="./images/foto3.jpg" alt="Pintura de un gato" loading="lazy" />
+                        <figcaption class="overlay-imagem-link">
+                            <a href="./images/foto3.jpg" title="Ver imagen en tamaño real" target="_blank"
+                                rel="noopener">
+                                Ver imagen en tamaño real
+                            </a>
+                        </figcaption>
+                    </figure>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2025 Galeria de Fotos</p>
+    </footer>
+
+    <!-- Cargar JavaScript al final para mejorar rendimiento -->
+    <script src="https://code.jquery.com/jquery-3.6.1.min.js"
+        integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    <script src="main.js" defer></script>
 </body>
 
 </html>
