@@ -1,178 +1,117 @@
 /**
- * Galería de fotos con jQuery
- * Script principal para manejar la funcionalidad de la galería
+ * Portfolio — Main Script
+ * Navigation, smooth scroll, form handling, scroll-based effects
  */
 (function ($) {
   "use strict";
 
-  // Almacena referencias a elementos DOM
   const DOM = {
-    btnNovaImagem: $("#btn-nova-imagem"),
-    formAdicionar: $("#form-adicionar-imagem"),
-    inputUrl: $("#endereco-imagem-nova"),
-    btnCancelar: $("#botao-cancelar"),
-    listaImagens: $(".lista-imagens"),
+    nav: $("#nav"),
+    navToggle: $("#nav-toggle"),
+    navMenu: $("#nav-menu"),
+    navLinks: $(".nav__link"),
+    contactForm: $("#contact-form"),
   };
 
-  /**
-   * Inicializa todos los eventos de la aplicación
-   */
-  function inicializarEventos() {
-    // Mostrar formulario de agregar imagen
-    DOM.btnNovaImagem.on("click", toggleFormulario);
+  function init() {
+    bindEvents();
+    handleScroll();
+  }
 
-    // Ocultar formulario al cancelar
-    DOM.btnCancelar.on("click", toggleFormulario);
+  function bindEvents() {
+    // Mobile nav toggle
+    DOM.navToggle.on("click", toggleMobileMenu);
 
-    // Manejar envío del formulario
-    DOM.formAdicionar.on("submit", adicionarNovaImagem);
-
-    // Prevenir el comportamiento por defecto en los enlaces de la galería
-    $(".overlay-imagem-link a").on("click", function (e) {
-      e.stopPropagation();
+    // Close mobile menu on link click
+    DOM.navLinks.on("click", function () {
+      DOM.navMenu.removeClass("nav__menu--open");
     });
+
+    // Nav scroll effect
+    $(window).on("scroll", handleScroll);
+
+    // Contact form
+    DOM.contactForm.on("submit", handleContactSubmit);
   }
 
   /**
-   * Muestra/oculta el formulario para añadir imágenes
+   * Toggle mobile navigation menu
    */
-  function toggleFormulario() {
-    DOM.formAdicionar.toggleClass("hidden");
+  function toggleMobileMenu() {
+    DOM.navMenu.toggleClass("nav__menu--open");
+  }
 
-    if (!DOM.formAdicionar.hasClass("hidden")) {
-      // Focus en el campo de URL cuando se muestra el formulario
-      DOM.inputUrl.focus();
+  /**
+   * Add shadow to nav on scroll
+   */
+  function handleScroll() {
+    if ($(window).scrollTop() > 20) {
+      DOM.nav.addClass("nav--scrolled");
+    } else {
+      DOM.nav.removeClass("nav--scrolled");
     }
   }
 
   /**
-   * Añade una nueva imagen a la galería
-   * @param {Event} e - Evento de envío del formulario
+   * Handle contact form submission
+   * @param {Event} e
    */
-  function adicionarNovaImagem(e) {
+  function handleContactSubmit(e) {
     e.preventDefault();
 
-    const urlImagem = DOM.inputUrl.val().trim();
+    var name = $("#contact-name").val().trim();
+    var email = $("#contact-email").val().trim();
+    var message = $("#contact-message").val().trim();
 
-    if (!urlImagem) {
-      mostrarMensaje("Por favor, insira uma URL válida", "error");
+    if (!name || !email || !message) {
+      showToast("Por favor, completa todos los campos.", "error");
       return;
     }
 
-    // Verificar que la URL es válida
-    if (!isValidUrl(urlImagem)) {
-      mostrarMensaje("A URL fornecida não é válida", "error");
+    if (!isValidEmail(email)) {
+      showToast("Por favor, ingresa un email valido.", "error");
       return;
     }
 
-    // Crear nuevo elemento de la galería
-    const novoItem = criarItemGaleria(urlImagem);
-
-    // Añadir el nuevo elemento a la galería con animación
-    novoItem.hide();
-    DOM.listaImagens.prepend(novoItem);
-    novoItem.fadeIn(300);
-
-    // Resetear el formulario
-    DOM.formAdicionar[0].reset();
-    toggleFormulario();
-
-    mostrarMensaje("Imagem adicionada com sucesso!", "success");
+    // Simulate form submission
+    showToast("Mensaje enviado. Te contactare pronto.", "success");
+    DOM.contactForm[0].reset();
   }
 
   /**
-   * Crea un nuevo elemento de la galería
-   * @param {string} url - URL de la imagen
-   * @returns {jQuery} Elemento jQuery del nuevo item
+   * Validate email format
+   * @param {string} email
+   * @returns {boolean}
    */
-  function criarItemGaleria(url) {
-    return $(`
-      <li class="item-galeria">
-        <figure>
-          <img src="${url}" alt="Imagem da galeria" loading="lazy" onerror="this.onerror=null; this.src='./images/erro.jpg'; this.alt='Erro ao carregar imagem';" />
-          <figcaption class="overlay-imagem-link">
-            <a href="${url}" title="Ver imagem em tamanho real" target="_blank" rel="noopener">
-              Ver imagem em tamanho real
-            </a>
-          </figcaption>
-        </figure>
-      </li>
-    `);
+  function isValidEmail(email) {
+    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
   }
 
   /**
-   * Muestra un mensaje temporal al usuario
-   * @param {string} mensagem - Texto del mensaje
-   * @param {string} tipo - Tipo de mensaje ('success' o 'error')
+   * Show a toast notification
+   * @param {string} message
+   * @param {string} type - 'success' or 'error'
    */
-  function mostrarMensagem(mensagem, tipo = "success") {
-    // Eliminar mensajes anteriores
-    $(".mensagem-feedback").remove();
+  function showToast(message, type) {
+    $(".toast").remove();
 
-    // Crear el elemento de mensaje
-    const mensagemElement = $(`
-      <div class="mensagem-feedback mensagem-${tipo}">
-        <p>${mensagem}</p>
-      </div>
-    `);
+    var toast = $(
+      '<div class="toast toast--' + type + '">' + message + "</div>"
+    );
 
-    // Añadir estilos inline temporales
-    mensagemElement.css({
-      position: "fixed",
-      bottom: "20px",
-      right: "20px",
-      padding: "10px 20px",
-      "border-radius": "4px",
-      color: "#fff",
-      "max-width": "300px",
-      "box-shadow": "0 2px 10px rgba(0,0,0,0.2)",
-      "background-color": tipo === "success" ? "#2ecc71" : "#e74c3c",
-      "z-index": "1000",
-    });
+    $("body").append(toast);
 
-    // Añadir a la página
-    $("body").append(mensagemElement);
+    // Trigger reflow for CSS transition
+    toast[0].offsetHeight;
+    toast.addClass("toast--visible");
 
-    // Eliminar después de 3 segundos
-    setTimeout(() => {
-      mensagemElement.fadeOut(300, function () {
-        $(this).remove();
-      });
+    setTimeout(function () {
+      toast.removeClass("toast--visible");
+      setTimeout(function () {
+        toast.remove();
+      }, 300);
     }, 3000);
   }
 
-  /**
-   * Valida si una cadena es una URL válida
-   * @param {string} url - URL a validar
-   * @returns {boolean} - True si es válida, false en caso contrario
-   */
-  function isValidUrl(url) {
-    try {
-      new URL(url);
-      return true;
-    } catch (e) {
-      return false;
-    }
-  }
-
-  // Al cargar el documento, inicializar eventos
-  $(document).ready(function () {
-    inicializarEventos();
-
-    // Comprobar soporte para funcionalidades modernas
-    checkBrowserSupport();
-  });
-
-  /**
-   * Comprueba si el navegador soporta funcionalidades modernas
-   */
-  function checkBrowserSupport() {
-    // Comprobar soporte para lazy loading
-    if (!("loading" in HTMLImageElement.prototype)) {
-      // Polyfill o alternativa para navegadores antiguos
-      document.querySelectorAll('img[loading="lazy"]').forEach((img) => {
-        img.setAttribute("loading", "eager");
-      });
-    }
-  }
+  $(document).ready(init);
 })(jQuery);
