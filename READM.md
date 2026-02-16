@@ -60,9 +60,9 @@ Durante el desarrollo de este proyecto, aprendí:
 
 ```js
 function toggleFormulario() {
-  DOM.formAdicionar.toggleClass('hidden');
-  
-  if (!DOM.formAdicionar.hasClass('hidden')) {
+  DOM.formAdicionar.toggleClass("hidden");
+
+  if (!DOM.formAdicionar.hasClass("hidden")) {
     DOM.inputUrl.focus();
   }
 }
@@ -96,7 +96,9 @@ function isValidUrl(url) {
 
 ```html
 <h2 class="sr-only">Imagens da galeria</h2>
-<button type="button" id="btn-nova-imagem" aria-label="Adicionar nova imagem">Nova imagem +</button>
+<button type="button" id="btn-nova-imagem" aria-label="Adicionar nova imagem">
+  Nova imagem +
+</button>
 ```
 
 ### Desarrollo continuo
@@ -122,7 +124,6 @@ En futuras iteraciones del proyecto, me gustaría enfocarme en:
 - Frontend Mentor - [@jorge-maikel-sierra](https://www.frontendmentor.io/profile/jorge-maikel-sierra)
 - Twitter - [@Jorge_Sierra_1](https://x.com/Jorge_Sierra_1)
 
-
 ## Agradecimientos
 
 Quisiera agradecer a:
@@ -131,3 +132,25 @@ Quisiera agradecer a:
 - La comunidad de desarrolladores web, cuyos tutoriales y artículos me ayudaron a resolver problemas
 - Los compañeros de trabajo que probaron la aplicación y proporcionaron valiosos comentarios
 - Todos los que inspiraron el diseño y la funcionalidad de esta galería de fotos
+
+---
+
+## 🤖 Servidor MCP de Documentación
+
+Este proyecto está configurado con el **Servidor MCP de AWS Labs** para generación automática de documentación.
+
+### 📚 Archivos de Configuración MCP
+
+- **`MCP_CONFIG.md`** - Guía completa de configuración del servidor MCP
+- **`MCP_COMMANDS.md`** - Comandos útiles para generar documentación
+- **`verify-mcp.sh`** - Script para verificar el estado del servidor
+
+### 🚀 Uso Rápido
+
+Abre GitHub Copilot Chat (`Cmd + I`) y prueba:
+
+```
+@workspace genera un resumen del proyecto
+```
+
+Para más comandos y ejemplos, consulta `MCP_COMMANDS.md`.
